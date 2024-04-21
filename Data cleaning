@@ -1,0 +1,53 @@
+#Classification of buses of AC_type
+AC_type=[]
+for i in bus_data["Bus_type"]:
+            if "NON A/C" in i:
+                AC_type.append('NON A/C')
+            elif "Non A/C" in i:
+                AC_type.append('NON A/C')
+            else:
+                AC_type.append('A/C')
+#Classification of buses of Seater
+Seater=[]
+for i in bus_data["Bus_type"]:
+            if "Seater"  in i:
+                Seater.append('yes')
+            else:
+                Seater.append('no')
+#Classification of buses of Sleeper
+sleeper=[]
+for i in bus_data['Bus_type']:
+    reg=re.findall('^(?!.*Semi Sleeper).*(Sleeper).*$',i)
+    if len(reg)==1:
+        sleeper.append('yes')
+    else:
+        sleeper.append('no')
+#Classification of buses of Semi Sleeper
+semi_sleeper=[]
+for i in bus_data['Bus_type']:
+    reg=re.findall('Semi Sleeper',i)
+    if len(reg)==1:
+        semi_sleeper.append('yes')
+    else:
+        semi_sleeper.append('no')
+#Adding new columns to dataframes
+bus_data['AC_type'] = AC_type
+bus_data['Seater'] = Seater
+bus_data['semi_sleeper'] = semi_sleeper
+bus_data['sleeper'] = sleeper
+
+#missing values
+bus_data.isna().sum()
+bus_data['ratings'].unique()
+bus_data.dropna(subset=['ratings'],inplace=True)
+bus_data['ratings'].unique()
+bus_data.isna().sum()
+
+#Duplicate Values
+bus_data.duplicated().sum()
+bus_data.drop_duplicates(inplace=True)
+bus_data.duplicated().sum()
+
+
+#converting DataFrame to Csv file
+bus_data.to_csv('redbus.csv')
