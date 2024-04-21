@@ -1,0 +1,206 @@
+
+#Data of buses from Hyderabad to Vijayawada
+# Initialize a Selenium WebDriver (you need to have appropriate driver installed)
+driver = webdriver.Chrome()  # You can use other drivers like Firefox, etc.
+url = r'https://www.edbus.in/bus-tickets/hyderabad-to-vijayawada?fromCityName=Hyderabad&fromCityId=124&srcCountry=IND&toCityName=Vijayawada&toCityId=134&destCountry=IND&onward=14-Mar-2024&opId=0&busType=Any'
+# Load the webpage
+driver.get(url)
+
+# Scroll down to load more results (assuming you need to scroll multiple times)
+# You may need to adjust the scrolling mechanism based on the structure of the webpage
+# Example:
+for _ in range(40):  # Scroll down 5 times (adjust as needed)
+    driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
+    # Wait for some time for the content to load
+    WebDriverWait(driver, 30).until(EC.presence_of_element_located((By.CSS_SELECTOR, "div.clearfix.bus-item")))
+
+# Now that all results are loaded, get the page source
+page_source = driver.page_source
+
+# Parse the page source using BeautifulSoup
+soup = BeautifulSoup(page_source, "html.parser")
+# Extract the desired information
+bus_names = []
+from_=[]
+to_=[]
+pickup_time=[]
+drop_time=[]
+prices=[]
+ratings=[]
+bus_type=[]
+duration=[]
+
+for i in soup.find_all('div', class_='clearfix bus-item'):
+    bus = i.find('div', class_='travels lh-24 f-bold d-color')
+    bus_names.append(bus.text)
+    from_.append('HYD')
+    to_.append('VJY')
+    price = i.find('div',class_='seat-fare')
+    p = re.findall('INR\s(\d+)',price.text)
+    prices.append(p[0])
+    rating = i.find('div',class_='column-six p-right-10 w-10 fl')
+    rat = re.findall('([\d\.]+)',rating.text)
+    try:
+        ratings.append(rat[0]) 
+    except:
+        ratings.append(np.nan) 
+    ptime = i.find('div', class_='dp-time f-19 d-color f-bold')
+    pickup_time.append(ptime.text)
+    dtime=i.find('div', class_='bp-time f-19 d-color disp-Inline')
+    drop_time.append(dtime.text)
+    btype=i.find('div', class_='bus-type f-12 m-top-16 l-color evBus')
+    bus_type.append(btype.text)
+    dur=i.find('div',class_='dur l-color lh-24')
+    reg=re.findall('(\d+)h',dur.text)
+    duration.append(reg[0])
+        
+
+# Close the WebDriver
+driver.quit()
+df=pd.DataFrame({'Bus_Name':bus_names,
+                 'Bus_type':bus_type,
+              "from":from_,
+              "to":to_,
+              "pickup_time":pickup_time,
+              "drop_time":drop_time,
+                 'duration':duration,
+              'prices':prices,
+              'ratings':ratings})
+
+#Data of buses from Hyderabad to Banglore
+# Initialize a Selenium WebDriver (you need to have appropriate driver installed)
+driver = webdriver.Chrome()  # You can use other drivers like Firefox, etc.
+url = r'https://www.redbus.in/bus-tickets/hyderabad-to-bangalore?fromCityName=Hyderabad&fromCityId=124&srcCountry=IND&toCityName=Bangalore&toCityId=122&destCountry=IND&onward=14-Mar-2024&opId=0&busType=Any'
+# Load the webpage
+driver.get(url)
+
+# Scroll down to load more results (assuming you need to scroll multiple times)
+# You may need to adjust the scrolling mechanism based on the structure of the webpage
+# Example:
+for _ in range(40):  # Scroll down 5 times (adjust as needed)
+    driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
+    # Wait for some time for the content to load
+    WebDriverWait(driver, 30).until(EC.presence_of_element_located((By.CSS_SELECTOR, "div.clearfix.bus-item")))
+
+# Now that all results are loaded, get the page source
+page_source = driver.page_source
+
+# Parse the page source using BeautifulSoup
+soup = BeautifulSoup(page_source, "html.parser")
+
+# Extract the desired information
+bus_names = []
+from_=[]
+to_=[]
+pickup_time=[]
+drop_time=[]
+prices=[]
+ratings=[]
+bus_type=[]
+duration=[]
+for i in soup.find_all('div', class_='clearfix bus-item'):
+    bus = i.find('div', class_='travels lh-24 f-bold d-color')
+    bus_names.append(bus.text)
+    from_.append('HYD')
+    to_.append('BLR')
+    price = i.find('div',class_='seat-fare')
+    p = re.findall('INR\s(\d+)',price.text)
+    prices.append(p[0])
+    rating = i.find('div',class_='column-six p-right-10 w-10 fl')
+    rat = re.findall('([\d\.]+)',rating.text)
+    try:
+        ratings.append(rat[0]) 
+    except:
+        ratings.append(np.nan) 
+    ptime = i.find('div', class_='dp-time f-19 d-color f-bold')
+    pickup_time.append(ptime.text)
+    dtime=i.find('div', class_='bp-time f-19 d-color disp-Inline')
+    drop_time.append(dtime.text)
+    btype=i.find('div', class_='bus-type f-12 m-top-16 l-color evBus')
+    bus_type.append(btype.text)
+    dur=i.find('div',class_='dur l-color lh-24')
+    reg=re.findall('(\d+)h',dur.text)
+    duration.append(reg[0])
+
+# Close the WebDriver
+driver.quit()
+df1=pd.DataFrame({'Bus_Name':bus_names,
+                 'Bus_type':bus_type,
+              "from":from_,
+              "to":to_,
+              "pickup_time":pickup_time,
+              "drop_time":drop_time,
+                  'duration':duration,
+              'prices':prices,
+              'ratings':ratings})
+#data of buses from banglore to chennai
+# Initialize a Selenium WebDriver (you need to have appropriate driver installed)
+driver = webdriver.Chrome()  # You can use other drivers like Firefox, etc.
+url = r'https://www.redbus.in/search?fromCityName=Bangalore&fromCityId=122&srcCountry=IND&toCityName=Chennai&toCityId=123&destCountry=IND&onward=14-Mar-2024&opId=0&busType=Anyy'
+# Load the webpage
+driver.get(url)
+
+# Scroll down to load more results (assuming you need to scroll multiple times)
+# You may need to adjust the scrolling mechanism based on the structure of the webpage
+# Example:
+for _ in range(40):  # Scroll down 5 times (adjust as needed)
+    driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
+    # Wait for some time for the content to load
+    WebDriverWait(driver, 30).until(EC.presence_of_element_located((By.CSS_SELECTOR, "div.clearfix.bus-item")))
+
+# Now that all results are loaded, get the page source
+page_source = driver.page_source
+
+# Parse the page source using BeautifulSoup
+soup = BeautifulSoup(page_source, "html.parser")
+# Extract the desired information
+bus_names = []
+from_=[]
+to_=[]
+pickup_time=[]
+drop_time=[]
+prices=[]
+ratings=[]
+bus_type=[]
+duration=[]
+
+for i in soup.find_all('div', class_='clearfix bus-item'):
+    bus = i.find('div', class_='travels lh-24 f-bold d-color')
+    bus_names.append(bus.text)
+    from_.append('BLR')
+    to_.append('CHN')
+    price = i.find('div',class_='seat-fare')
+    p = re.findall('INR\s(\d+)',price.text)
+    prices.append(p[0])
+    rating = i.find('div',class_='column-six p-right-10 w-10 fl')
+    rat = re.findall('([\d\.]+)',rating.text)
+    try:
+        ratings.append(rat[0]) 
+    except:
+        ratings.append(np.nan) 
+
+    ptime = i.find('div', class_='dp-time f-19 d-color f-bold')
+    pickup_time.append(ptime.text)
+    dtime=i.find('div', class_='bp-time f-19 d-color disp-Inline')
+    drop_time.append(dtime.text)
+    btype=i.find('div', class_='bus-type f-12 m-top-16 l-color evBus')
+    bus_type.append(btype.text)
+    dur=i.find('div',class_='dur l-color lh-24')
+    reg=re.findall('(\d+)h',dur.text)
+    duration.append(reg[0])
+        
+
+# Close the WebDriver
+driver.quit()
+df2=pd.DataFrame({'Bus_Name':bus_names,
+                 'Bus_type':bus_type,
+              "from":from_,
+              "to":to_,
+              "pickup_time":pickup_time,
+              "drop_time":drop_time,
+                  'duration':duration,
+              'prices':prices,
+              'ratings':ratings})
+
+#concatination of all buses journeys
+bus_data=pd.concat([df,df1,df2],axis=0,ignore_index=True)
