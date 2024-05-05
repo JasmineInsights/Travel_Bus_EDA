@@ -1,8 +1,7 @@
-#Bus Ticket Price Analysis
+#Travel Bus Analysis
 
 #Description
-*This project focuses on performing Exploratory Data Analysis (EDA) on bus ticket prices. The goal is to gain insights into the factors influencing ticket prices and to visualize trends within the data.
-
+*This project focuses on performing Exploratory Data Analysis (EDA) on travel bus. This project aims to analyze travel bus data based on various features to uncover insights into the factors influencing travel bus operations and to visualize trends within the dataset.
 #Features
 *Data cleaning and preprocessing
 *Statistical analysis of ticket prices
@@ -14,7 +13,7 @@
 *Run the provided Jupyter Notebook or Python script to execute the analysis.
 
 #Data
-*The dataset used in this analysis consists of bus ticket prices collected from a website. 
+*The dataset used in this analysis consists of travel bus collected from a website. 
 
 #Usage
 *Open the Jupyter Notebook or Python script to view the analysis.
